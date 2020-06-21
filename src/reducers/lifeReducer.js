@@ -8,7 +8,7 @@ const initialState = {
   //property that holds all the alive cells for easy access?
 };
 
-const checkNeighbors = (rowIndex, colIndex, x, y, status) => {
+const checkNeighbors = (rowIndex, colIndex, x, y, arr) => {
   const neighbours = [
     [rowIndex - 1, colIndex - 1],
     [rowIndex - 1, colIndex],
@@ -27,7 +27,10 @@ const checkNeighbors = (rowIndex, colIndex, x, y, status) => {
       neighbor[1] >= 0 &&
       neighbor[1] < y
     ) {
-      neighbours[index] = status;
+      neighbours[index] = arr[neighbor[0]][neighbor[1]].alive;
+      // if (rowIndex === 0 && colIndex === 1) {
+      //   console.log(`--CHECK THIS-- ${rowIndex},${colIndex} ${status}`);
+      // }
     } else {
       neighbours[index] = false;
     }
@@ -90,32 +93,35 @@ const lifeReducer = (state = initialState, action) => {
       };
 
     case ANIMATE_GAME:
-      let currentGrid = [];
+      let currentGrid = null;
       let nextGrid = [];
 
       if (state.swapGrid) {
-        currentGrid = state.grid2;
-        // nextGrid = state.grid1;
+        currentGrid = "grid1";
       } else {
-        currentGrid = state.grid1;
-        // nextGrid = state.grid2;
+        currentGrid = "grid2";
       }
-
-      currentGrid.forEach((currentRow, rowIndex) => {
+      state[currentGrid].forEach((currentRow, rowIndex) => {
         nextGrid.push([]);
         currentRow.forEach((currentColumn, colIndex) => {
           let count = 0;
-          checkNeighbors(
+          const neighborBool = checkNeighbors(
             rowIndex,
             colIndex,
             state.x,
             state.y,
-            currentColumn.alive
-          ).forEach((val) => {
+            state[currentGrid]
+          );
+          console.log(neighborBool);
+          neighborBool.forEach((val) => {
             if (val) {
+              //counts number of true neighbors
               count++;
             }
           });
+          // console.log(
+          //   `COUNT: ${count} ROW: ${rowIndex} COL: ${colIndex} ALIVE: ${currentColumn.alive}`
+          // );
           nextGrid[rowIndex].push({
             alive: aliveOrDead(count, currentColumn.alive)
           });
@@ -125,13 +131,13 @@ const lifeReducer = (state = initialState, action) => {
       if (state.swapGrid) {
         return {
           ...state,
-          grid1: nextGrid,
+          grid2: nextGrid,
           swapGrid: false
         };
       } else {
         return {
           ...state,
-          grid2: nextGrid,
+          grid1: nextGrid,
           swapGrid: true
         };
       }
