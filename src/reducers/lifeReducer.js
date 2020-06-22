@@ -1,8 +1,10 @@
 import { INITIALIZE_GRID, ANIMATE_GAME } from "../actions";
+
 const initialState = {
   grid1: [],
   grid2: [],
   swapGrid: false,
+  animationId: null,
   x: 0,
   y: 0
   //property that holds all the alive cells for easy access?
@@ -112,7 +114,6 @@ const lifeReducer = (state = initialState, action) => {
             state.y,
             state[currentGrid]
           );
-          console.log(neighborBool);
           neighborBool.forEach((val) => {
             if (val) {
               //counts number of true neighbors
