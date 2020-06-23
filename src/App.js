@@ -10,7 +10,7 @@ const GridArea = styled.div`
 `;
 
 function App() {
-  const [modify, setModify] = useState(true);
+  const [modify, setModify] = useState(false);
   return (
     <div className="App">
       <GridArea>

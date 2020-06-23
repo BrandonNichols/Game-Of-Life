@@ -7,13 +7,13 @@ import {
 } from "../../actions";
 
 const Controls = (props) => {
-  let getAnimationId = null;
+  let getAnimationId = React.useRef();
+  let isAnimating = false;
 
   function continuallyAnimate() {
-    // console.log(`TIMESTAMP: ${timestamp}`);
     props.animateGameAction();
-    if (props.modify) {
-      getAnimationId = requestAnimationFrame(continuallyAnimate);
+    if (isAnimating) {
+      getAnimationId.current = requestAnimationFrame(continuallyAnimate);
     }
   }
 
@@ -24,22 +24,23 @@ const Controls = (props) => {
       </button>
       <button onClick={() => props.animateGameAction()}>Next</button>
       <button
-        onClick={async () => {
+        onClick={() => {
           // if (props.canModify) {
           // props.setModifyAction(false);
-          await props.setModify(false);
-          await continuallyAnimate();
+          props.setModify(false);
+          isAnimating = true;
+          continuallyAnimate();
           // }
         }}
       >
         Start
       </button>
       <button
-        onClick={async () => {
+        onClick={() => {
           // props.setModifyAction(true);
-          await props.setModify(true);
-          cancelAnimationFrame(getAnimationId);
-          // return;
+          props.setModify(true);
+          isAnimating = false;
+          cancelAnimationFrame(getAnimationId.current);
         }}
       >
         Stop
