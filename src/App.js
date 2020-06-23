@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Grid from "./components/grid-area/Grid";
 import Controls from "./components/controls/Controls";
@@ -10,11 +10,12 @@ const GridArea = styled.div`
 `;
 
 function App() {
+  const [modify, setModify] = useState(true);
   return (
     <div className="App">
       <GridArea>
-        <Controls />
-        <Grid />
+        <Controls modify={modify} setModify={setModify} />
+        <Grid modify={modify} />
       </GridArea>
     </div>
   );

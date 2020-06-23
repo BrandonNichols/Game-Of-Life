@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-// import { initializeGrid } from "../../actions";
+import { modifyGridAction } from "../../actions";
 
 const CellRow = styled.div`
   display: flex;
@@ -22,6 +22,12 @@ const Grid = (props) => {
   // props.initializeGrid(x, y);
   // const gridMatrix = [];
 
+  const modifyGrid = (row, col) => {
+    if (props.modify) {
+      props.modifyGridAction(row, col);
+    }
+  };
+
   return (
     <div>
       {props.grid
@@ -29,7 +35,13 @@ const Grid = (props) => {
             return (
               <CellRow key={row}>
                 {val.map((cell, col) => {
-                  return <CellDiv key={col} alive={cell.alive}></CellDiv>;
+                  return (
+                    <CellDiv
+                      key={col}
+                      alive={cell.alive}
+                      onClick={() => modifyGrid(row, col)}
+                    ></CellDiv>
+                  );
                 })}
               </CellRow>
             );
@@ -41,8 +53,9 @@ const Grid = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    grid: state.swapGrid ? state.grid1 : state.grid2
+    grid: state.swapGrid ? state.grid1 : state.grid2,
+    canModify: state.canModify
   };
 };
 
-export default connect(mapStateToProps, null)(Grid);
+export default connect(mapStateToProps, { modifyGridAction })(Grid);

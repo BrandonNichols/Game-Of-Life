@@ -1,10 +1,16 @@
-import { INITIALIZE_GRID, ANIMATE_GAME } from "../actions";
+import {
+  INITIALIZE_GRID,
+  ANIMATE_GAME,
+  MODIFY_GRID,
+  CAN_MODIFY
+} from "../actions";
 
 const initialState = {
   grid1: [],
   grid2: [],
   swapGrid: false,
   animationId: null,
+  canModify: true,
   x: 0,
   y: 0
   //property that holds all the alive cells for easy access?
@@ -30,9 +36,6 @@ const checkNeighbors = (rowIndex, colIndex, x, y, arr) => {
       neighbor[1] < y
     ) {
       neighbours[index] = arr[neighbor[0]][neighbor[1]].alive;
-      // if (rowIndex === 0 && colIndex === 1) {
-      //   console.log(`--CHECK THIS-- ${rowIndex},${colIndex} ${status}`);
-      // }
     } else {
       neighbours[index] = false;
     }
@@ -79,7 +82,6 @@ const lifeReducer = (state = initialState, action) => {
             };
           } else {
             gridMatrix[i][j] = {
-              //property that holds location of neighbors?
               alive: false
             };
           }
@@ -120,9 +122,6 @@ const lifeReducer = (state = initialState, action) => {
               count++;
             }
           });
-          // console.log(
-          //   `COUNT: ${count} ROW: ${rowIndex} COL: ${colIndex} ALIVE: ${currentColumn.alive}`
-          // );
           nextGrid[rowIndex].push({
             alive: aliveOrDead(count, currentColumn.alive)
           });
@@ -142,6 +141,45 @@ const lifeReducer = (state = initialState, action) => {
           swapGrid: true
         };
       }
+    // return {
+    //   ...state,
+    //   [currentGrid]: nextGrid,
+    //   swapGrid: !state.swapGrid
+    // };
+
+    case MODIFY_GRID: {
+      const { modifyRow, modifyCol } = action.payload;
+      let currentGrid = null;
+      let nextGrid = [];
+
+      if (state.swapGrid) {
+        currentGrid = "grid1";
+      } else {
+        currentGrid = "grid2";
+      }
+
+      for (let i = 0; i < state[currentGrid].length; i++) {
+        nextGrid.push([]);
+        for (let j = 0; j < state[currentGrid][i].length; j++) {
+          if (i === modifyRow && j === modifyCol) {
+            nextGrid[i].push({ alive: !state[currentGrid][i][j].alive });
+          } else {
+            nextGrid[i].push({ alive: state[currentGrid][i][j].alive });
+          }
+        }
+      }
+
+      return {
+        ...state,
+        [currentGrid]: nextGrid
+      };
+    }
+
+    case CAN_MODIFY:
+      return {
+        ...state,
+        canModify: action.payload
+      };
 
     default:
       return state;

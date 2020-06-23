@@ -1,13 +1,20 @@
 import React from "react";
 import { connect } from "react-redux";
-import { initializeGridAction, animateGameAction } from "../../actions";
+import {
+  initializeGridAction,
+  animateGameAction,
+  setModifyAction
+} from "../../actions";
 
 const Controls = (props) => {
   let getAnimationId = null;
 
   function continuallyAnimate() {
+    // console.log(`TIMESTAMP: ${timestamp}`);
     props.animateGameAction();
-    getAnimationId = requestAnimationFrame(continuallyAnimate);
+    if (props.modify) {
+      getAnimationId = requestAnimationFrame(continuallyAnimate);
+    }
   }
 
   return (
@@ -16,13 +23,39 @@ const Controls = (props) => {
         Reset Grid
       </button>
       <button onClick={() => props.animateGameAction()}>Next</button>
-      <button onClick={() => continuallyAnimate()}>Start</button>
-      <button onClick={() => cancelAnimationFrame(getAnimationId)}>Stop</button>
+      <button
+        onClick={async () => {
+          // if (props.canModify) {
+          // props.setModifyAction(false);
+          await props.setModify(false);
+          await continuallyAnimate();
+          // }
+        }}
+      >
+        Start
+      </button>
+      <button
+        onClick={async () => {
+          // props.setModifyAction(true);
+          await props.setModify(true);
+          cancelAnimationFrame(getAnimationId);
+          // return;
+        }}
+      >
+        Stop
+      </button>
     </div>
   );
 };
 
-export default connect(null, {
+const mapStateToProps = (state) => {
+  return {
+    canModify: state.canModify
+  };
+};
+
+export default connect(mapStateToProps, {
   initializeGridAction,
-  animateGameAction
+  animateGameAction,
+  setModifyAction
 })(Controls);
