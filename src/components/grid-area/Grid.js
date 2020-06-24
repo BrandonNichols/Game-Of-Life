@@ -10,11 +10,11 @@ const CellRow = styled.div`
 `;
 
 const CellDiv = styled.div`
-  border: 1px solid black;
+  border: 1px solid grey;
   padding: 5px;
   min-width: 30px;
   min-height: 30px;
-  ${(props) => (props.alive ? "background: black;" : "background: white;")}
+  ${(props) => (props.alive ? "background: white;" : "background: black;")}
 `;
 
 const Grid = (props) => {

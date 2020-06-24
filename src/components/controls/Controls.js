@@ -1,45 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import {
-  initializeGridAction,
-  animateGameAction,
-  setModifyAction
-} from "../../actions";
+import { initializeGridAction, animateGameAction } from "../../actions";
 
 const Controls = (props) => {
   let getAnimationId = React.useRef();
-  let isAnimating = false;
+  let start;
+  const [initialized, setInitialized] = useState(false);
 
-  function continuallyAnimate() {
-    props.animateGameAction();
-    if (isAnimating) {
-      getAnimationId.current = requestAnimationFrame(continuallyAnimate);
+  function continuallyAnimate(timestamp) {
+    if (start === undefined) {
+      start = timestamp;
     }
+    const elapsed = timestamp - start;
+
+    if (elapsed > 500) {
+      props.animateGameAction();
+      start = timestamp;
+    }
+    getAnimationId.current = requestAnimationFrame(continuallyAnimate);
+  }
+
+  if (!initialized) {
+    props.initializeGridAction(25, 25);
+    setInitialized(true);
   }
 
   return (
     <div>
-      <button onClick={() => props.initializeGridAction(25, 25)}>
+      <button onClick={() => props.setShowModal((prevState) => !prevState)}>
+        Select Preset Configuration
+      </button>
+      <button
+        onClick={() => {
+          cancelAnimationFrame(getAnimationId.current);
+          props.setModify(true);
+          props.initializeGridAction(25, 25);
+        }}
+      >
         Reset Grid
       </button>
       <button onClick={() => props.animateGameAction()}>Next</button>
       <button
         onClick={() => {
-          // if (props.canModify) {
-          // props.setModifyAction(false);
           props.setModify(false);
-          isAnimating = true;
-          continuallyAnimate();
-          // }
+          getAnimationId.current = requestAnimationFrame(continuallyAnimate);
         }}
       >
         Start
       </button>
       <button
         onClick={() => {
-          // props.setModifyAction(true);
           props.setModify(true);
-          isAnimating = false;
           cancelAnimationFrame(getAnimationId.current);
         }}
       >
@@ -57,6 +68,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   initializeGridAction,
-  animateGameAction,
-  setModifyAction
+  animateGameAction
 })(Controls);

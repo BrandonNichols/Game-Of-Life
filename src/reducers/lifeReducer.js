@@ -2,15 +2,13 @@ import {
   INITIALIZE_GRID,
   ANIMATE_GAME,
   MODIFY_GRID,
-  CAN_MODIFY
+  CHOOSE_PRESET
 } from "../actions";
 
 const initialState = {
   grid1: [],
   grid2: [],
   swapGrid: false,
-  animationId: null,
-  canModify: true,
   x: 0,
   y: 0
   //property that holds all the alive cells for easy access?
@@ -63,34 +61,30 @@ const aliveOrDead = (count, status) => {
   return status;
 };
 
+const initializeGrid = (gridX, gridY) => {
+  const gridMatrix = [];
+  for (let i = 0; i < gridX; i++) {
+    gridMatrix.push(new Array(gridY));
+    for (let j = 0; j < gridY; j++) {
+      // gridMatrix[i][j] = `${i},${j}`;
+
+      gridMatrix[i][j] = {
+        alive: false
+      };
+    }
+  }
+
+  return gridMatrix;
+};
+
 const lifeReducer = (state = initialState, action) => {
   switch (action.type) {
     case INITIALIZE_GRID:
       const { gridX, gridY } = action.payload;
-      const gridMatrix = [];
-      for (let i = 0; i < gridX; i++) {
-        gridMatrix.push(new Array(gridY));
-        for (let j = 0; j < gridY; j++) {
-          // gridMatrix[i][j] = `${i},${j}`;
-          if (
-            (i === 0 && j === 1) ||
-            (i === 1 && j === 2) ||
-            (i === 2 && (j === 0 || j === 1 || j === 2))
-          ) {
-            gridMatrix[i][j] = {
-              alive: true
-            };
-          } else {
-            gridMatrix[i][j] = {
-              alive: false
-            };
-          }
-        }
-      }
 
       return {
         ...state,
-        grid1: gridMatrix,
+        grid1: initializeGrid(gridX, gridY),
         swapGrid: true,
         x: gridX,
         y: gridY
@@ -175,11 +169,114 @@ const lifeReducer = (state = initialState, action) => {
       };
     }
 
-    case CAN_MODIFY:
+    case CHOOSE_PRESET: {
+      let currentGrid = null;
+
+      if (state.swapGrid) {
+        currentGrid = "grid1";
+      } else {
+        currentGrid = "grid2";
+      }
+      const presetGrid = initializeGrid(state.x, state.y);
+
+      switch (action.payload) {
+        case "box":
+          presetGrid[Math.floor(state.x / 2)][Math.floor(state.y / 2)] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2)][Math.floor(state.y / 2) + 1] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2) + 1][Math.floor(state.y / 2)] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2) + 1][
+            Math.floor(state.y / 2) + 1
+          ] = { alive: true };
+          break;
+        case "beehive":
+          presetGrid[Math.floor(state.x / 2)][Math.floor(state.y / 2)] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2)][Math.floor(state.y / 2) + 1] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2) + 1][
+            Math.floor(state.y / 2) - 1
+          ] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2) + 1][
+            Math.floor(state.y / 2) + 2
+          ] = { alive: true };
+          presetGrid[Math.floor(state.x / 2) + 2][Math.floor(state.y / 2)] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2) + 2][
+            Math.floor(state.y / 2) + 1
+          ] = { alive: true };
+          break;
+        case "loaf":
+          presetGrid[Math.floor(state.x / 2)][Math.floor(state.y / 2)] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2)][Math.floor(state.y / 2) + 1] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2) + 1][
+            Math.floor(state.y / 2) - 1
+          ] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2) + 1][
+            Math.floor(state.y / 2) + 2
+          ] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2) + 2][Math.floor(state.y / 2)] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2) + 2][
+            Math.floor(state.y / 2) + 2
+          ] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2) + 3][
+            Math.floor(state.y / 2) + 1
+          ] = {
+            alive: true
+          };
+          break;
+        case "boat":
+          presetGrid[Math.floor(state.x / 2)][Math.floor(state.y / 2)] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2)][Math.floor(state.y / 2) + 1] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2) + 1][Math.floor(state.y / 2)] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2) + 1][
+            Math.floor(state.y / 2) + 2
+          ] = {
+            alive: true
+          };
+          presetGrid[Math.floor(state.x / 2) + 2][
+            Math.floor(state.y / 2) + 1
+          ] = {
+            alive: true
+          };
+          break;
+        default:
+          break;
+      }
+
       return {
         ...state,
-        canModify: action.payload
+        [currentGrid]: presetGrid
       };
+    }
 
     default:
       return state;
