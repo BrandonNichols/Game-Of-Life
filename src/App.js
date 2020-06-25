@@ -9,6 +9,7 @@ const GridArea = styled.div`
   display: flex;
   flex-direction: column;
   background: black;
+  height: 100vh;
 `;
 
 function App() {

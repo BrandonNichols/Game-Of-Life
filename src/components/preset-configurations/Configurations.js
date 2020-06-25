@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { setConfiguration } from "../../actions";
+import { setConfigurationAction } from "../../actions";
 import styled from "styled-components";
 
 const ModalOverlay = styled.div`
@@ -53,25 +53,25 @@ const Configurations = (props) => {
           <img
             src={box}
             alt={boxAlt}
-            onClick={() => props.setConfiguration("box")}
+            onClick={() => props.setConfigurationAction("box")}
           />
           <Name>Beehive</Name>
           <img
             src={beehive}
             alt={beehiveAlt}
-            onClick={() => props.setConfiguration("beehive")}
+            onClick={() => props.setConfigurationAction("beehive")}
           />
           <Name>Loaf</Name>
           <img
             src={loaf}
             alt={loafAlt}
-            onClick={() => props.setConfiguration("loaf")}
+            onClick={() => props.setConfigurationAction("loaf")}
           />
           <Name>Boat</Name>
           <img
             src={boat}
             alt="a cube like structure with 4 squares neighboring each other"
-            onClick={() => props.setConfiguration("boat")}
+            onClick={() => props.setConfigurationAction("boat")}
           />
         </div>
       </ConfigurationModal>
@@ -79,4 +79,4 @@ const Configurations = (props) => {
   );
 };
 
-export default connect(null, { setConfiguration })(Configurations);
+export default connect(null, { setConfigurationAction })(Configurations);

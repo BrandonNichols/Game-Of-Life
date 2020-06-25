@@ -2,7 +2,8 @@ import {
   INITIALIZE_GRID,
   ANIMATE_GAME,
   MODIFY_GRID,
-  CHOOSE_PRESET
+  CHOOSE_PRESET,
+  RANDOMIZE
 } from "../actions";
 
 const initialState = {
@@ -61,16 +62,21 @@ const aliveOrDead = (count, status) => {
   return status;
 };
 
-const initializeGrid = (gridX, gridY) => {
+const initializeGrid = (gridX, gridY, canRandomizeGrid = false) => {
   const gridMatrix = [];
   for (let i = 0; i < gridX; i++) {
     gridMatrix.push(new Array(gridY));
     for (let j = 0; j < gridY; j++) {
-      // gridMatrix[i][j] = `${i},${j}`;
-
-      gridMatrix[i][j] = {
-        alive: false
-      };
+      let randomStatus = Math.floor(Math.random() * 2);
+      if (canRandomizeGrid) {
+        gridMatrix[i][j] = {
+          alive: randomStatus
+        };
+      } else {
+        gridMatrix[i][j] = {
+          alive: false
+        };
+      }
     }
   }
 
@@ -275,6 +281,22 @@ const lifeReducer = (state = initialState, action) => {
       return {
         ...state,
         [currentGrid]: presetGrid
+      };
+    }
+
+    case RANDOMIZE: {
+      const randomGrid = initializeGrid(state.x, state.y, true);
+      let currentGrid;
+
+      if (state.swapGrid) {
+        currentGrid = "grid1";
+      } else {
+        currentGrid = "grid2";
+      }
+
+      return {
+        ...state,
+        [currentGrid]: randomGrid
       };
     }
 

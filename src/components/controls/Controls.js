@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { initializeGridAction, animateGameAction } from "../../actions";
+import {
+  initializeGridAction,
+  animateGameAction,
+  randomizeGridAction
+} from "../../actions";
 
 const Controls = (props) => {
   let getAnimationId = React.useRef();
@@ -13,7 +17,7 @@ const Controls = (props) => {
     }
     const elapsed = timestamp - start;
 
-    if (elapsed > 500) {
+    if (elapsed > 150) {
       props.animateGameAction();
       start = timestamp;
     }
@@ -21,7 +25,7 @@ const Controls = (props) => {
   }
 
   if (!initialized) {
-    props.initializeGridAction(25, 25);
+    props.initializeGridAction(25, 60);
     setInitialized(true);
   }
 
@@ -32,9 +36,18 @@ const Controls = (props) => {
       </button>
       <button
         onClick={() => {
+          props.randomizeGridAction();
           cancelAnimationFrame(getAnimationId.current);
           props.setModify(true);
-          props.initializeGridAction(25, 25);
+        }}
+      >
+        Random Grid
+      </button>
+      <button
+        onClick={() => {
+          cancelAnimationFrame(getAnimationId.current);
+          props.setModify(true);
+          props.initializeGridAction(25, 60);
         }}
       >
         Reset Grid
@@ -68,5 +81,6 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   initializeGridAction,
-  animateGameAction
+  animateGameAction,
+  randomizeGridAction
 })(Controls);
