@@ -5,16 +5,19 @@ import { modifyGridAction } from "../../actions";
 
 const CellRow = styled.div`
   display: flex;
-  min-height: 100%;
-  min-width: 100%;
 `;
 
 const CellDiv = styled.div`
-  border: 1px solid black;
   padding: 5px;
   min-width: 30px;
   min-height: 30px;
-  ${(props) => (props.alive ? "background: black;" : "background: white;")}
+  ${(props) => (props.alive ? "background: white;" : "background: black;")}
+`;
+
+const GridHolder = styled.div`
+  border: 1px solid white;
+  margin: 0 auto;
+  width: 93.9%;
 `;
 
 const Grid = (props) => {
@@ -29,7 +32,7 @@ const Grid = (props) => {
   };
 
   return (
-    <div>
+    <GridHolder>
       {props.grid
         ? props.grid.map((val, row) => {
             return (
@@ -47,7 +50,7 @@ const Grid = (props) => {
             );
           })
         : null}
-    </div>
+    </GridHolder>
   );
 };
 
