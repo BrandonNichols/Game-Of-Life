@@ -5,6 +5,20 @@ import {
   animateGameAction,
   randomizeGridAction
 } from "../../actions";
+import styled from "styled-components";
+
+const Button = styled.button`
+  border: 1px solid white;
+  background: black;
+  color: white;
+  font-family: "Press Start 2P", cursive;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 20px;
+`;
 
 const Controls = (props) => {
   let getAnimationId = React.useRef();
@@ -30,11 +44,11 @@ const Controls = (props) => {
   }
 
   return (
-    <div>
-      <button onClick={() => props.setShowModal((prevState) => !prevState)}>
+    <ButtonContainer>
+      <Button onClick={() => props.setShowModal((prevState) => !prevState)}>
         Select Preset Configuration
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => {
           props.randomizeGridAction();
           cancelAnimationFrame(getAnimationId.current);
@@ -42,8 +56,8 @@ const Controls = (props) => {
         }}
       >
         Random Grid
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => {
           cancelAnimationFrame(getAnimationId.current);
           props.setModify(true);
@@ -51,25 +65,25 @@ const Controls = (props) => {
         }}
       >
         Reset Grid
-      </button>
-      <button onClick={() => props.animateGameAction()}>Next</button>
-      <button
+      </Button>
+      <Button onClick={() => props.animateGameAction()}>Next</Button>
+      <Button
         onClick={() => {
           props.setModify(false);
           getAnimationId.current = requestAnimationFrame(continuallyAnimate);
         }}
       >
         Start
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => {
           props.setModify(true);
           cancelAnimationFrame(getAnimationId.current);
         }}
       >
         Stop
-      </button>
-    </div>
+      </Button>
+    </ButtonContainer>
   );
 };
 
