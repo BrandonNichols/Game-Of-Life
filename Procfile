@@ -1,1 +1,1 @@
-start: react-scripts start
+start: node index.js
