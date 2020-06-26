@@ -1,1 +1,1 @@
-web: node serve -s build
+web: bin/boot
