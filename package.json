@@ -2,7 +2,6 @@
   "name": "game-of-life",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -16,6 +15,10 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.1.1"
+  },
+  "engines": {
+    "node": "10.15.3",
+    "npm": "6.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
