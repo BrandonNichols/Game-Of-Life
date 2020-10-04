@@ -9,15 +9,15 @@ const CellRow = styled.div`
 
 const CellDiv = styled.div`
   padding: 5px;
-  min-width: 30px;
-  min-height: 30px;
+  width: 100%;
+  height: 25px;
   ${(props) => (props.alive ? "background: white;" : "background: black;")}
 `;
 
 const GridHolder = styled.div`
   border: 1px solid white;
   margin: 0 auto;
-  width: 93.9%;
+  width: 97%;
 `;
 
 const Grid = (props) => {

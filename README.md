@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<!-- This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
@@ -65,4 +65,23 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 ### `yarn build` fails to minify
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify -->
+
+## Conway's Game Of Life
+
+A simple implementation that applies the concept of cellular automaton as devised by Mathemetician John Conway in 1970.
+More about Conway's Game of Life and cellular automata https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+
+## Motivation
+
+The idea behind implementing this concept is to learn a little more about cellular automata and to create a beautiful
+portfolio piece that can interacted and shown to anyone with no knowledge of programming that isn't just another website.
+
+## Tech/Framework Used
+
+Built with
+
+- React
+- Javascript
+- HTML
+- CSS

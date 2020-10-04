@@ -11,7 +11,34 @@ const initialState = {
   grid2: [],
   swapGrid: false,
   x: 0,
-  y: 0
+  y: 0,
+  presetArray: [
+    {
+      type: "Static",
+      configuration: [
+        {
+          name: "box",
+          src:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Game_of_life_block_with_border.svg/66px-Game_of_life_block_with_border.svg.png"
+        },
+        {
+          name: "beehive",
+          src:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Game_of_life_beehive.svg/98px-Game_of_life_beehive.svg.png"
+        },
+        {
+          name: "loaf",
+          src:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Game_of_life_loaf.svg/98px-Game_of_life_loaf.svg.png"
+        },
+        {
+          name: "boat",
+          src:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Game_of_life_boat.svg/82px-Game_of_life_boat.svg.png"
+        }
+      ]
+    }
+  ]
   //property that holds all the alive cells for easy access?
 };
 
